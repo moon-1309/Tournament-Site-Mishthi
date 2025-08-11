@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victory Vaulty : Home</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+        <link rel="Icon" href="images/favicon-32x32.png">
+
+    <style>
+        body,
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        #eye1 {
+            cursor: pointer;
+        }
+
+        #eye2 {
+            cursor: pointer;
+        }
+        #bcg-neon{
+            background-image: url('./images/dd.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+
+            $("#Signupbtn").click(function () {
+                // alert();
+                if (!$("#txtEmail1").val() && !$("#txtPwd1").val()) {
+                    alert("Please enter Email and Password");
+                    return;
+                }
+                if (!$("#txtEmail1").val()) {
+                    alert("Please enter Email ID");
+                    return;
+                }
+                if (!$("#txtPwd1").val()) {
+                    alert("Please enter Password");
+                    return;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test($("#txtEmail1").val())) {
+                    alert("Invalid email format.");
+                }
+                const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+                if (!passwordRegex.test($("#txtPwd1").val())) {
+                    alert("Password must be at least 8 characters long and should include uppercase letters, lowercase letters, numbers and special characters.");
+                    return;
+                }
+                let obj1 = {
+                    type: "get",
+                    url: "/save-user",
+                    data: {
+                        txtEmail1: $("#txtEmail1").val(),
+                        txtPwd1: $("#txtPwd1").val(),
+                        utype: $("#comboUser").val()
+                    }
+                }
+                $.ajax(obj1).then(
+                    function (responseJsonAry) {
+                        alert(responseJsonAry);
+
+                    }).fail(function (err) {
+
+                        alert("There was a problem processing your request. Please try again");
+
+                    })
+            })
+
+            $("#Lbtn").click(function () {
+                
+
+    if (!$("#txtEmail2").val() || !$("#txtPwd2").val()) {
+        alert("Please enter Email ID and Password");
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test($("#txtEmail2").val())) {
+        alert("Invalid Email ID format.");
+        return;
+    }
+
+    $.ajax({
+        type: "get",
+        url: "/do-login",
+        data: {
+            txtEmail2: $("#txtEmail2").val(),
+            txtPwd2: $("#txtPwd2").val()
+        }
+    }).then(function (response) {
+          alert(response);
+        if (response == "Blocked") {
+            alert("Your ID is BLOCKED");
+        } else if (response == "Invalid") {
+            alert("Invalid Email ID or Password");
+        } else {
+            localStorage.setItem("activeUser", $("#txtEmail2").val());
+            if (response == "Player") location.href = "dash-player.html";
+            else if (response == "Organizer") {location.href = "dash-organizer.html"; console.log("Login button clicked");}
+            else if (response == "admin") location.href = "dash-Admin.html";
+        }
+    }).fail(function (err) {
+        alert(JSON.stringify(err));
+    })
+})
+
+
+           
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            
+            $("#eye1").click(function () {
+                let txt = $("#txtPwd1").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd1").prop("type", "text"); //type changed
+                    $("#eye1").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+                else {
+                    $("#txtPwd1").prop("type", "password");
+                    $("#eye1").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+            })
+
+            $("#eye2").click(function () {
+                let txt = $("#txtPwd2").prop("type");
+                if (txt == "password") {
+                    $("#txtPwd2").prop("type", "text"); //type changed
+                    $("#eye2").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+                else {
+                    $("#txtPwd2").prop("type", "password");
+                    $("#eye2").removeClass("fa-eye").addClass("fa-eye-slash");
+                }
+            })
+
+            $("#txtEmail1").keyup(function () {
+                let email = $(this).val();//getter
+                //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (email == "") {
+                    $("#errMsgE1").html("Empty").css("color", "black");
+                    $(this).focus();
+                }
+                else if (regex.test(email) == false) {
+                    $("#errMsgE1").html("Invalid Email ID").css("color", "red");
+                    $(this).focus();
+                }
+                else {
+                    $("#errMsgE1").html("Valid").css("color", "green");
+                }
+
+            })
+
+            $("#txtEmail2").keyup(function () {
+                let email = $(this).val();//getter
+                //  let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+                let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (email == "") {
+                    $("#errMsgE2").html("Empty").css("color", "black").css("text-align", "left");
+                    $(this).focus();
+                }
+                else if (regex.test(email) == false) {
+                    $("#errMsgE2").html("Invalid Email ID").css("color", "red").css("text-align", "left");
+                    $(this).focus();
+                }
+                else {
+                    $("#errMsgE2").html("Valid").css("color", "green").css("text-align", "left");
+                }
+
+            })
+
+
+            $("#txtPwd1").keyup(function () {
+                let regex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+                let pwd = $(this).val();
+                if (regex.test(pwd) == true)
+                    $("#lblPwd1").html("Valid").css("color", "green");
+                else
+                    $("#lblPwd1").html("Wrong Password").css("color", "red");
+            })
+            $("#txtPwd2").keyup(function () {
+                let regex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+                let pwd = $(this).val();
+                if (regex.test(pwd) == true)
+                    $("#lblPwd2").html("Valid").css("color", "green");
+                else
+                    $("#lblPwd2").html("Wrong Password").css("color", "red");
+            })
+        
+        })
+    </script>
+
+</head>
+
+<body id="Home" style="background-color: black;">
+
+    <nav class="navbar navbar-expand-lg mb-5 fixed-top" style="background-color:black;" >
+        <div class="container-fluid">
+            <div class="ms-1">
+                <a href="./images/download (5).jpeg">
+                    <img src="./images/download (5).jpeg" alt="Logo"
+                        style="border-radius: 50%;height: 5vh;float: left;">
+                </a>
+            </div>
+            <span class="navbar-brand ms-2 mt-0"
+                style="font-style: italic;color: white;float: left;font-size: 20px;font-weight: bold;">www.VictoryVault.com</span>
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end mt-2 mb-1" id="navbarContent">
+                <div class="d-flex gap-2 flex-column flex-sm-row align-items-sm-center">
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="background-color:#FF0090;color: white;">
+                        Sign Up
+                    </button>
+                    <button type="button" class="btn" data-bs-toggle="modal"
+                        data-bs-target="#staticBackdrop2" style="background-color:#FF0090;color: white;">
+                        Login
+                    </button>
+                    <a href="#Home">
+                        <input type="button" value="Home" class="btn w-100" style="background-color:#FF0090;color: white;">
+                    </a>
+                    <a href="#ReachUs">
+                        <input type="button" value="Reach Us" class="btn w-100" style="background-color:#FF0090;color: white;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">SignUp</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <label for="txtEmail1" class="form-label">Email ID</label>
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="txtEmail1" placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div id="errMsgE1" class="mb-3 ms-2" style="text-align: left;"></div>
+
+
+
+                        <div class="mb-3">
+                            <label for="txtPwd1" class="form-label">Password</label>
+                            <div class="row form-control ms-0" style="height: 6vh;">
+                                <input type="password" class="ms-0" id="txtPwd1" placeholder="Minimum 8 characters"
+                                    minlength="8" style="width: 85%;outline: none;float: left;border: 0px;">
+                                <i class="fa-solid fa-eye-slash" id="eye1"
+                                    style="width: 5vh;float: right;margin-top: 1vh;"></i>
+                            </div>
+                            <div id="lblPwd1" class="ms-2" style="text-align: left;"></div>
+                        </div>
+
+                        <center>
+                            <div class="col-6 col-sm-6 col-md-3">
+                                <label for="comboUser" class="form-label">User Type</label>
+                                <select class="form-select w-100" id="comboUser">
+                                    <option selected value="none" readonly>Select</option>
+                                    <option value="Organizer">Organizer</option>
+                                    <option value="Player">Player</option>
+                                </select>
+                            </div>
+                        </center>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-info" id="Signupbtn" value="Sign In">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <label for="txtEmail2" class="form-label mb-3">Email ID</label>
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="txtEmail2" placeholder="name@example.com">
+                            <label for="floatingInput">Email address</label>
+                        </div>
+                        <div id="errMsgE2" class="mb-3 ms-2" style="text-align: left;"></div>
+
+                        <div class="mb-3">
+                            <label for="txtPwd2" class="form-label">Password</label>
+                            <div class="row form-control ms-0" style="height: 6vh;">
+                                <input type="password" class="ms-0" id="txtPwd2" placeholder="Minimum 8 characters"
+                                    minlength="8" style="width: 85%;outline: none;float: left;border: 0px;">
+                                <i class="fa-solid fa-eye-slash" id="eye2"
+                                    style="width: 5vh;float: right;margin-top: 1vh;"></i>
+                            </div>
+                            <div id="lblPwd2" class="ms-1" style="float: left;"></div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer mt-2" style="justify-content: center;">
+                    <input type="button" value="Login" class="btn btn-info" id="Lbtn">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- ------------------------------------------------------------------------------------------------------------------- -->
+
+
+    <div id="carouselExampleSlidesOnly" class="carousel slide mb-2 ms-3 me-3" data-bs-ride="carousel"
+        data-bs-interval="5000" style="margin-top: 5%;">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="./images/download (3).jpeg" class="w-100" alt="Picture not available"
+                    style="height: 80vh;">
+               
+            </div>
+            <div class="carousel-item">
+                <img src="./images/Vector 3d football player with neon light lines isolated _ Premium Vector.jpeg" class="w-100" alt="Picture not available"
+                    style="height: 80vh;">
+                
+            </div>
+            <div class="carousel-item">
+                <img src="./images/6f93caff-0ab2-4ca5-affd-06b00a8a8360.jpeg" class="w-100" alt="Picture not available"
+                    style="height: 80vh;">
+               
+            </div>
+            <div class="carousel-item">
+                <img src="./images/65-athlete.jpeg" class="w-100" alt="Picture not available"
+                    style="height: 80vh;">
+                
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+
+    <div class="container-fluid text-white mt-4 mb-4" style="border: 4px white double;background-color: #ff00908f;">
+        <h2 style="text-align: center;">About Us</h2>
+    </div>
+
+    <div class="row text-white mb-4 ms-1 me-1" id="bcg-neon">
+        <div class="col-md-10 offset-md-1 mt-4">
+            <div class="row g-5 mb-4">
+                <div class="col-md-5" >
+                    <h4>What We Offer:-</h4>
+                    <ul class="list-group list-group-flush" style="list-style-type: circle;box-shadow: 1px 1px 5px 5px white;">
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">✅ Regular
+                            matches & training sessions</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">✅ Community
+                            events & tournaments</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">✅ Organization
+                            Identity Development</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">✅ A space to
+                            grow—on and off the field</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 offset-md-1">
+                    <h4>Why Join Us?:-</h4>
+                    <ul class="list-group list-group-flush" style="list-style-type: circle;box-shadow: 1px 1px 5px 5px white;">
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">🏐 Fitness &
+                            Fun – Stay active while doing what you love.</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">🏐 Inclusive
+                            Culture – Open to beginners, enthusiasts, and pros alike.</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">🏐 Transparent
+                            Processes – Experience reliable systems and fair policies.</li>
+                        <li class="list-group-item bg-dark text-white" style="text-align: left;">🏐 Growth &
+                            Discipline – Develop strength, confidence, and focus.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+
+    <div class="container-fluid text-white mt-3 mb-4" style="border: 4px white double;background-color: #ff00908f;">
+        <h2 style="text-align: center;">Our Services</h2>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row ms-1 me-1">
+            <div class="col-md-3">
+                <div class="card mb-2" style="background-color: #ff00908f;color: white">
+                    <img src="./images/80+ Basquetbol Wallpapers _ Free download _ Best Collection.jpeg" class="card-img-top img-fluid"
+                        alt="Picture not available" style="height: 13rem;background-color: black;">
+                    <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;text-align: center;">
+                        Diverse
+                        Contests</div>
+                    <div class="card-body">
+                        <p class="card-text">Championship encourages healthy competition, test your skills, and
+                            bring out the best of you.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2" style="background-color: #ff00908f;color: white;">
+                    <img src="./images/org-details.jpeg" class="card-img-top img-fluid bg-secondary" alt="Picture not available"
+                        style="height: 13rem;">
+                    <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;text-align: center;">
+                        Elevating
+                        Sports Organizations</div>
+                    <div class="card-body">
+                        <p class="card-text">Organizations craft a strong public image as well as develop
+                            long-term
+                            visibility in the sports ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2" style="background-color: #ff00908f;color: white;">
+                    <img src="./images/all-sports-people.jpeg" class="card-img-top img-fluid" alt="Picture not available"
+                        style="height: 13rem;">
+                    <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;text-align: center;">
+                        Sportsmanship
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Provides opportunities for athletes to showcase their talent and
+                            acquire competitive experience</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card mb-2" style="background-color: #ff00908f;color: white;">
+                    <img src="./images/65.jpeg" class="card-img-top img-fluid" alt="Picture not available"
+                        style="height: 13rem;">
+                    <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;text-align: center;">
+                        Athlete
+                        Exposure and Organization</div>
+                    <div class="card-body">
+                        <p class="card-text">When athletes supported by an organization succeed, the spotlight
+                            often
+                            falls on the organization itself.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+    <div class="container-fluid text-white mt-3 mb-4">
+        <h2 style="border: 4px white double;text-align: center;background-color: #ff00908f;">Nation’s Sports Vision</h2>
+    </div>
+
+    <div class="row ms-3 me-3">
+        <div class="card mb-3 bg-dark">
+            <div class="row g-0">
+                <div class="col-md-5 mt-5 mb-1">
+                    <img src="./images/Sticker Multi sport collage football boxing soccer voleyball ice hockey on black backgro by 103tnn.jpeg" class="img-fluid rounded-start" alt="Picture not available">
+                </div>
+                <div class="col-md-7">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text mt-4 text-white" style="font-size: large;">
+                            Our initiatives align with the government’s mission to promote sports as a tool for
+                            youth development, national pride, and community engagement.
+                            By organizing inclusive events and supporting athlete growth, we contribute to the
+                            broader goals of schemes like Khelo India, aiming to build a strong sporting
+                            culture.
+                        </p>
+           
+                        <a class="nav-link text-white d-block d-md-none" data-bs-toggle="collapse"
+                            href="#readMoreContent" role="button" aria-expanded="false" aria-controls="readMoreContent">
+                            Read More
+                        </a>
+                     
+                        <div class="collapse d-md-block text-white mt-2" id="readMoreContent" style="font-size: large;">
+                            When organizations are easy to reach and clients feel understood, stronger
+                            relationships are built, and goals are achieved faster.
+                            The focus is always on reducing complexity, removing barriers, and creating smooth
+                            pathways between sports services and the people who need them.
+                            Through reliable systems, accessible communication, and thoughtful coordination,
+                            both sides are empowered to grow and succeed—together.
+                            In every interaction, the goal remains the same: make it easier to connect, easier
+                            to trust, and easier to move forward.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+
+
+    <div class="container-fluid text-white mt-3 mb-4">
+        <h2 style="border: 4px white double;text-align: center;background-color: #ff00908f;">Meet the Developers</h2>
+    </div>
+
+
+    <div class="row ms-3 me-3">
+        <div class="col-md-2">
+            <div class="card mb-2" style="height: 22rem;align-items: center;width: 20rem;background-color: #ff00908f;">
+                <img src="./images/WhatsApp Image 2024-04-03 at 22.58.35_b1d18f6c.jpg" class="card-img-top mt-3 img-fluid" alt="Picture not available"
+                    style="height: 12rem;border-radius: 50%;width: 14rem;">
+                <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;">Developed By
+                </div>
+                <div class="card-body">
+                    <center>
+                        <div class="card-text">Ridhi Sharma</div>
+                        <div class="card-text">Full Stack Developer</div>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 offset-md-1">
+            <div class="card mb-2" style="height: 22rem;align-items: center;width: 20rem;background-color: #ff00908f;">
+
+                <img src="./images/Rajesh Sir.png" class="card-img-top mt-3 img-fluid" alt="Picture not available"
+                    style="height: 12rem;border-radius: 50%;width: 14rem;">
+
+                <div class="card-title mt-3 mb-0" style="font-weight: bolder;font-size: larger;"> Under the
+                    Guidance of</div>
+                <div class="card-body">
+                    <center>
+                        <div class="card-text">Rajesh Bansal</div>
+                        <div class="card-text">Author of 'Real Java'</div>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+    <!-- ================================================================================================================================================================================ -->
+
+
+
+
+    <div class="container-fluid text-white mt-3 mb-4" id="ReachUs">
+        <h2 style="border: 4px white double;text-align: center;background-color: #ff00908f;">Reach Us</h2>
+    </div>
+
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="ratio ratio-4x3">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d215.49231190427602!2d74.95240626100599!3d30.21205810987753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a4f07278a9%3A0x4a0d6293513f98ce!2sBanglore%20Computer%20Education!5e0!3m2!1sen!2sin!4v1753042173001!5m2!1sen!2sin"
+                        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            <div class="col-md-6 text-white mt-5">
+                <div class="row mt-5">
+                    <center>
+                        <div class="mt-5">
+                            <!-- Facebook :  -->
+                            <a href="https://www.facebook.com" style="color: lightskyblue;"><img
+                                    src="./images/Facebook.webp" alt="Icon pic not available"
+                                    style="width: 8vh;height: 8vh;text-decoration: none;"></a>
+
+                            <!-- Instagram : -->
+                            <a href="https://www.instagram.com"><img src="./images/insta2-removebg-preview.png"
+                                    alt="Icon pic not available"
+                                    style="width: 7vh;height: 7vh;text-decoration: none;"></a>
+
+                            <!-- Twitter :  -->
+                            <a href="https://x.com">
+                                <img src="./images/X2.png" alt="Icon pic not available"
+                                    style="width: 7vh;height: 7vh;text-decoration: none;">
+                            </a>
+                        </div>
+
+                        <div class="mt-1">
+                            Website : <a href="https://www.realjavaonline.com"
+                                style="color: lightskyblue;">https://www.realjavaonline.com</a>
+                        </div>
+                        <div class="mt-1">
+                            Email ID : 1309mishthi@gmail.com
+                        </div>
+                        <div class="mt-1">
+                            Contact Us : +91 7986061434
+                        </div>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</body>
+
+</html>

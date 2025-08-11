@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+    <style>
+      body,
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+    </style>
+  <script>
+    function showUser() {
+      let activeUser = localStorage.getItem("activeUser");
+      document.getElementById("welcome").innerHTML = activeUser;
+    }
+    function doLogout() {
+      localStorage.getItem("activeUser");
+      location.href = "index.html";
+    }
+  </script>
+</head>
+
+<body style="background-color: black;" onload="showUser();">
+
+
+
+  <nav class="navbar" style="line-height: .5vh;background-color: #FF0090;">
+    <div class="container-fluid">
+      <div class="ms-1" style="width: 15rem;">
+        <div class="ms-0">
+          <a href="./images/download (5).jpeg">
+            <img src="./images/download (5).jpeg" alt=""
+              style="border-radius: 50%;background-color: white;height: 3vh;float: left;">
+          </a>
+        </div>
+        <span class="navbar-brand ms-1"
+          style="font-style: italic;color: white;float: left;font-size: 17px;margin-top: .5vh;">www.VictoryVault.com</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="text-white" style="font-size: 60px;margin-left: 40%;">Welcome : <span id="welcome"></span></div>
+
+    <div class="container mt-2  g-1">
+      <center>
+      <div class="row">
+        <div class="col-md-10 offset-md-1 g-1">
+          <div class="row mb-4">
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="card mb-4" style="width: 80%;border-radius: 20px;border: 5px black double;background-color: #FF0090;">
+                <img src="./images/sony pictures network Office Illustrations - shreedhar sutar  ✪.jpeg" class="card-img-top" alt="" style="border-radius: 20px;height: 38vh;">
+                <div class="card-body">
+                  <a href="admin-users-console.html" class="btn btn-light">Users Console</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="card mb-4" style="width: 80%;border-radius: 20px;border: 5px black double;background-color: #FF0090;">
+                <img src="./images/play.jpeg" class="card-img-top" alt="" style="border-radius: 20px;height: 38vh;">
+                <div class="card-body">
+                  <a href="admin-players-console.html" class="btn btn-light">Players Console</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="card mb-4" style="width: 80%;border-radius: 20px;border: 5px black double;background-color: #FF0090;">
+                <img src="./images/basketball-2.jpeg" class="card-img-top" alt="" style="border-radius: 20px;height: 38vh;">
+                <div class="card-body">
+                  <a href="admin-organizers-console.html" class="btn btn-light">Organisers Console</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3"> 
+            <div class="col-md-12 mb-5">
+              <input type="button" value="Log Out" class="btn" style="font-weight: 700;background-color: #FF0090;color: white;" onclick="doLogout();">
+            </div>
+          </div>
+        </div>
+      </div>
+      </center>
+    </div>
+
+
+  <nav class="navbar fixed-bottom" style="line-height: .5vh;background-color: #FF0090;">
+    <div class="container-fluid">
+      <div class="ms-1" style="width: 40rem;">
+        <div class="ms-1">
+          <a href="./images/download (5).jpeg">
+            <img src="./images/download (5).jpeg" alt=""
+              style="border-radius: 50%;background-color: white;height: 3vh;float: left;">
+          </a>
+        </div>
+        <span class="navbar-brand ms-2"
+          style="font-style: italic;color: white;float: left;font-size: 17px;margin-top: .5vh;">www.VictoryVault.com</span>
+      </div>
+    </div>
+  </nav>
+
+
+</body>
+
+</html>

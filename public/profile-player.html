@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+
+        function showPrev(fileRef, prevRef) {
+            const [file] = fileRef.files
+            if (file) {
+                prevRef.src = URL.createObjectURL(file)
+            }
+        }
+        function convertToMySQLDate(dateStr) {
+            if (!dateStr) return null;
+            return dateStr.split("T")[0].replace(/\//g, "-");
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $("#DataBtn").click(function () {
+
+                let obj4 = {
+                    type: "get",
+                    url: "/do-get-data",
+                    data: {
+                        txtEmail4: $("#txtEmail4").val()
+                    }
+                }
+                $.ajax(obj4).then(
+                    function (responseJsonAry) {
+
+                        // alert(responseJsonAry);
+                        // alert(JSON.stringify(responseJsonAry));
+
+                        let AdhaarNumber = responseJsonAry[0].Adhaar_Number;
+                        let Name = responseJsonAry[0].Name;
+                        let dobMySQL = responseJsonAry[0].DOB;
+                        let Gender = responseJsonAry[0].Gender;
+                        let Address = responseJsonAry[0].Address;
+                        let Game = responseJsonAry[0].Game;
+                        let Contact = responseJsonAry[0].Contact;
+                        let OtherInfo = responseJsonAry[0].OtherInfo;
+                        let mysqlDate = convertToMySQLDate(dobMySQL);
+
+                        $("#prevA").prop("src", responseJsonAry[0].Adhaar_url);
+                        $("#prevP").prop("src", responseJsonAry[0].ProfilePic_url);
+                        $("#txtAdhaarNo").val(AdhaarNumber),
+                            $("#txtName").val(Name),
+                            $("#txtAddress2").val(Address),
+                            $("#txtDOB ").val(mysqlDate),
+                            $("#txtGender").val(Gender),
+                            $("#comboSport2").val(Game),
+                            $("#txtContact").val(Contact),
+                            $("#txtComments2").val(OtherInfo),
+                            $("#hdnA").val(responseJsonAry[0].Adhaar_url),
+                            $("#hdnP").val(responseJsonAry[0].ProfilePic_url)
+
+                    }).fail(function (err) {
+
+                        alert(err.message);
+
+                    })
+            })
+
+        })
+    </script>
+    <script>
+        function showUser() {
+            let activeUser = localStorage.getItem("activeUser");
+            document.getElementById("txtEmail4").value = activeUser;
+        }
+    </script>
+</head>
+
+<body style="background-color: black;" onload="showUser();">
+
+    <input type="hidden" id="hdnA" name="hdnA">
+    <input type="hidden" id="hdnP" name="hdnP">
+
+    <nav class="navbar" style="line-height: .5vh;background-color: #FF0090;">
+        <div class="container-fluid">
+            <div class="ms-1" style="width: 40rem;">
+                <div class="ms-1">
+                    <a href="./images/download (5).jpeg">
+                        <img src="./images/download (5).jpeg" alt=""
+                            style="border-radius: 50%;background-color: white;height: 3vh;float: left;">
+                    </a>
+                </div>
+                <span class="navbar-brand ms-2"
+                    style="font-style: italic;color: white;float: left;font-size: 17px;margin-top: .5vh;">www.VictoryVault.com</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container text-white mb-5 mt-5 border border-light" style="background-color: #FF0090;">
+
+        <div class="col-md-12 text-white mt-3 mb-2" style="height: 10vh; border-bottom:3px white solid;">
+            <center>
+                <h1 class="display-5 mt-3" style="font-weight: 500;font-family: cursive;">Profile</h1>
+            </center>
+        </div>
+        <form action="/do-upload" class="row g-3 mt-2" method="post" enctype="multipart/form-data">
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <label for="txtEmail4" class="form-label">Email ID</label>
+                    <input type="email" class="form-control" id="txtEmail4" name="txtEmail4" readonly>
+                </div>
+                <div class="col-md-3 offset-md-2 mt-4">
+                    <button type="button" class="btn btn-light" id="DataBtn">Get Data</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-2 col-md-6 mt-3">
+                    <label for="Adhaar" class="form-label">Upload front of Adhaar Card</label>
+                    <input type="file" class="form-control" id="Adhaar" name="Adhaar" onchange="showPrev(Adhaar,prevA)"
+                        multiple required>
+                </div>
+                <div class="mb-3 col-md-6 mt-3">
+                    <label for="ProfilePic" class="form-label">Profile Pic</label>
+                    <input type="file" class="form-control" id="ProfilePic" name="ProfilePic"
+                        onchange="showPrev(ProfilePic,prevP)" multiple required>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="mb-2 col-md-4 offset-md-2">
+                    <img src="" width="100" height="100" id="prevA" alt=""
+                        style="border: 1px black solid;background-color: white;">
+                </div>
+                <div class="mb-3 col-md-4 offset-md-2">
+                    <img src="" width="100" height="100" id="prevP" alt=""
+                        style="border: 1px black solid;background-color: white;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <label for="txtAdhaarNo" class="form-label">Adhaar Card Number</label>
+                    <input type="text" class="form-control" id="txtAdhaarNo" name="txtAdhaarNo" readonly>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="txtName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="txtName" name="txtName" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <label for="txtGender" class="form-label">Gender</label>
+                    <input type="text" class="form-control" id="txtGender" name="txtGender" readonly>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <label for="txtDOB" class="form-label">Date of Birth</label>
+                    <input type="text" class="form-control" id="txtDOB" name="txtDOB" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="txtAddress2" class="form-label">Address</label>
+                <input type="text" class="form-control" id="txtAddress2" name="txtAddress2">
+            </div>
+            <div class="col-md-6">
+                <label for="txtContact" class="form-label">Contact Number</label>
+                <input type="text" class="form-control" id="txtContact" name="txtContact" placeholder="+91">
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <label for="comboSport2" class="form-label">Game you play</label>
+                    <select class="form-select" id="comboSport2" name="comboSport2"
+                        onchange="doShowSelSport(comboSport2);">
+                        <option selected value="none" disabled>Select</option>
+                        <option value="Cricket">Cricket</option>
+                        <option value="Football">Football</option>
+                        <option value="Badminton">Badminton</option>
+                        <option value="Tennis">Tennis</option>
+                        <option value="Hockey">Hockey</option>
+                        <option value="Boxing">Boxing</option>
+                        <option value="Wrestling">Wrestling</option>
+                        <option value="Swimming">Swimming</option>
+                        <option value="Volleyball">Volleyball</option>
+                        <option value="Skating">Skating</option>
+                        <option value="Chess">Chess</option>
+                        <option value="Basketball">Basketball</option>
+                        <option value="Table Tennis">Table Tennis</option>
+                        <option value="Shooting">Shooting</option>
+                        <option value="Taekwondo">Taekwondo</option>
+                    </select>
+                </div>
+            </div>
+            <label for="txtComments2" class="form-label">Other Information</label>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" placeholder="Leave a comment here" id="txtComments2" name="txtComments2" required
+                    style="height: 100px"></textarea>
+                <label for="txtComments">Other Information</label>
+            </div>
+            <div class="row">
+                <center>
+                    <input type="submit" value="Upload Data" class="btn btn-light mt-2 mb-4"
+                        style="margin-right: 20px;">
+                    <input type="submit" value="Update" class="btn btn-light mt-2 mb-4" formaction="/do-update-player">
+                </center>
+            </div>
+        </form>
+    </div>
+
+    <nav class="navbar" style="line-height: .5vh;background-color: #FF0090;">
+        <div class="container-fluid">
+            <div class="ms-1" style="width: 40rem;">
+                <div class="ms-1">
+                    <a href="./images/download (5).jpeg">
+                        <img src="./images/download (5).jpeg" alt=""
+                            style="border-radius: 50%;background-color: white;height: 3vh;float: left;">
+                    </a>
+                </div>
+                <span class="navbar-brand ms-2"
+                    style="font-style: italic;color: white;float: left;font-size: 17px;margin-top: .5vh;">www.VictoryVault.com</span>
+            </div>
+        </div>
+    </nav>
+
+</body>
+
+</html>
