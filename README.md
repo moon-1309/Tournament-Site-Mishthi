@@ -1,17 +1,21 @@
-💻Live Priview : 
+#💻Live Priview : 
 https://tournament-site-mishthi-1.onrender.com/
 
-DEMO :
+#DEMO :
 
 https://github.com/user-attachments/assets/6aa67c09-38e3-4a4d-bff4-c58e01f8f7dd
 
 
-Strating Index ...:
+#Strating Index ...:
+
+
 <img width="1919" height="946" alt="Screenshot 2025-09-28 200619" src="https://github.com/user-attachments/assets/c3f0f9dd-1362-4ab5-9aea-beb669d5e27d" />
 <img width="1919" height="945" alt="Screenshot 2025-09-28 200558" src="https://github.com/user-attachments/assets/a11bf127-b6cf-423f-9610-02d99fab603e" />
 
 
-Players Screen : 
+#Players Screen : 
+
+
 
 <img width="1919" height="954" alt="Screenshot 2025-09-28 201331" src="https://github.com/user-attachments/assets/4222f4b5-0bdf-46fa-9526-68765b59be55" />
 ---Profile---
@@ -22,7 +26,9 @@ Players Screen :
 <img width="1919" height="947" alt="Screenshot 2025-09-28 201424" src="https://github.com/user-attachments/assets/c98c3a25-a7b9-4f27-8737-972d3c9d4f30" />
 
 
-Organizers Screen : 
+#Organizers Screen : 
+
+
 
 <img width="1919" height="949" alt="Screenshot 2025-09-28 201638" src="https://github.com/user-attachments/assets/73564088-a029-4b18-b3d1-69dc1d2b266f" />
 ---Organization details---
@@ -33,7 +39,9 @@ Organizers Screen :
 <img width="1918" height="948" alt="Screenshot 2025-09-28 201728" src="https://github.com/user-attachments/assets/a20a29b8-62cd-4692-a7e6-8058f43711b5" />
 
 
-Admin Screen : 
+#Admin Screen : 
+
+
 
 <img width="1919" height="950" alt="Screenshot 2025-09-28 201849" src="https://github.com/user-attachments/assets/c8740027-fbfd-4036-9a31-32577947ea55" />
 ---User Console---
