@@ -16,7 +16,7 @@ https://github.com/user-attachments/assets/6aa67c09-38e3-4a4d-bff4-c58e01f8f7dd
 # Players Screen : 
 
 <img width="1919" height="954" alt="Screenshot 2025-09-28 201331" src="https://github.com/user-attachments/assets/4222f4b5-0bdf-46fa-9526-68765b59be55" />
-## ---Profile---
+## Profile
 <img width="1919" height="948" alt="Screenshot 2025-09-28 201353" src="https://github.com/user-attachments/assets/8239ff53-7118-4ffc-a450-5084f94d6388" />
 ## ---Explore Events---
 <img width="1919" height="949" alt="Screenshot 2025-09-28 201416" src="https://github.com/user-attachments/assets/940f45e3-2e13-43ae-82e4-867154a5c144" />
